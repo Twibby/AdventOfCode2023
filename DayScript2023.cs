@@ -40,7 +40,7 @@ public class DayScript2023 : MonoBehaviour
         }
         else
         {
-            yield return StartCoroutine(Tools2023.Instance.GetTestInput("https://ollivier.iiens.net/AoC/2023/" + _day + ".txt"));
+            yield return StartCoroutine(Tools2023.Instance.GetTestInput("https://ollivier.iiens.net/AoC/2023/" + _day.ToString("00") + ".txt"));
             _input = Tools2023.Instance.Input;
         }
 
