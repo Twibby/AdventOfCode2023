@@ -150,19 +150,36 @@ public class Day_2023_10 : DayScript2023
             prevPos = tmp;
         }
 
+        // Go through all lines, and depending on which side of pipe we are, add 1 or not 
         long result = 0;        
-        for (int i=0; i < datas.Count; i++)
+        for (int i = 0; i < datas.Count; i++)
         {
             bool isIn = false;
-            for (int j=0; j < datas[i].Count; j++)
+            char lastCorner = '.';
+            for (int j = 0; j < datas[i].Count; j++)
             {
-                if (!(datas[i][j] is '-' or '7' or 'J'))
+                if (loopPipes.Exists(p => p.x == i && p.y == j))
                 {
-                    if (loopPipes.Exists(p => p.x == i && p.y == j))
-                        isIn = !isIn;
-                    else if (isIn)
-                        result++;
+                    switch (datas[i][j])
+                    {
+                        case '-':
+                            break;
+                        case 'L': case 'F': 
+                            lastCorner = datas[i][j]; 
+                            break;
+                        case '7':
+                            if (lastCorner == 'L') { isIn = !isIn; }    // if something like L----7 we're changing side, if F----7 we are not
+                            break;
+                        case 'J':
+                            if (lastCorner == 'F') { isIn = !isIn; }    // if something like F----J we're changing side, if L----J we are not
+                            break;
+                        default:
+                            isIn = !isIn;
+                            break;
+                    }
                 }
+                else if (isIn)  // not a pipe of the loop, so we're either inside or outside
+                    result++;
             }
         }
 
